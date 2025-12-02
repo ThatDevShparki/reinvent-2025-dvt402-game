@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiro Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            color: #ffffff;
+        }
+        
+        #gameCanvas {
+            border: 3px solid #790ECB;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            box-shadow: 0 0 20px rgba(121, 14, 203, 0.5);
+        }
+        
+        #ui {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        button {
+            background: #790ECB;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: #9a3de0;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #controls {
+            margin-top: 15px;
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="ui">
+        <button id="startBtn">Start Game</button>
+        <button id="restartBtn" style="display: none;">Restart</button>
+        <div id="controls">
+            Use Arrow Keys or WASD to move
+        </div>
+    </div>
+    <script type="module" src="dist/game.js"></script>
+</body>
+</html>
