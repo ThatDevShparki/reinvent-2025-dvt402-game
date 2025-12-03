@@ -11,6 +11,7 @@ class Game {
     keys: Set<string>;
     isRunning: boolean = false;
     lastTime: number = 0;
+    debugCollision: boolean = false;
     
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -20,7 +21,9 @@ class Game {
         this.map = new GameMap(50, 40);
         
         // Initialize player in center of map
-        this.player = new Player(800, 640);
+        // Map is 1600x1280, so center is at 800x640
+        // Player position is top-left corner, so subtract half player size to center
+        this.player = new Player(800 - 16, 640 - 16);
         
         // Initialize camera
         this.camera = new Camera(
@@ -41,6 +44,11 @@ class Game {
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(e.key)) {
                 e.preventDefault();
                 this.keys.add(e.key);
+            }
+            
+            // Toggle debug collision visualization with 'c' key
+            if (e.key === 'c') {
+                this.debugCollision = !this.debugCollision;
             }
         });
         
@@ -73,8 +81,10 @@ class Game {
     }
     
     restart(): void {
-        // Reset player position
-        this.player = new Player(800, 640);
+        // Reset player position to center of map
+        // Map is 1600x1280, so center is at 800x640
+        // Player position is top-left corner, so subtract half player size to center
+        this.player = new Player(800 - 16, 640 - 16);
         this.keys.clear();
         
         if (!this.isRunning) {
@@ -111,23 +121,34 @@ class Game {
         // Draw map
         this.map.draw(this.ctx, this.camera.x, this.camera.y, this.canvas.width, this.canvas.height);
         
-        // Draw player
-        this.player.draw(this.ctx, this.camera.x, this.camera.y);
+        // Draw player with optional collision debug
+        this.player.draw(this.ctx, this.camera.x, this.camera.y, this.debugCollision);
         
         // Draw UI overlay
         this.drawUI();
     }
     
     drawUI(): void {
+        const tile = this.player.getCurrentTile();
+        const center = this.player.getCenterPosition();
+        const currentTile = this.map.getTileAt(center.x, center.y);
+        
         // Draw position debug info
         this.ctx.fillStyle = 'rgba(121, 14, 203, 0.8)';
-        this.ctx.fillRect(10, 10, 200, 60);
+        this.ctx.fillRect(10, 10, 220, 120);
         
         this.ctx.fillStyle = '#ffffff';
         this.ctx.font = '12px "Courier New"';
-        this.ctx.fillText(`X: ${Math.floor(this.player.position.x)}`, 20, 30);
-        this.ctx.fillText(`Y: ${Math.floor(this.player.position.y)}`, 20, 50);
-        this.ctx.fillText(`Speed: ${Math.floor(Math.sqrt(this.player.velocity.x ** 2 + this.player.velocity.y ** 2) * 10) / 10}`, 20, 70);
+        this.ctx.fillText(`Pos: ${Math.floor(this.player.position.x)}, ${Math.floor(this.player.position.y)}`, 20, 30);
+        this.ctx.fillText(`Center: ${Math.floor(center.x)}, ${Math.floor(center.y)}`, 20, 50);
+        this.ctx.fillText(`Tile: ${tile.tileX}, ${tile.tileY}`, 20, 70);
+        this.ctx.fillText(`Type: ${currentTile?.type || 'none'}`, 20, 90);
+        this.ctx.fillText(`Speed: ${Math.floor(Math.sqrt(this.player.velocity.x ** 2 + this.player.velocity.y ** 2) * 10) / 10}`, 20, 110);
+        
+        // Show debug hint
+        if (this.debugCollision) {
+            this.ctx.fillText(`[C] Debug: ON`, 20, 130);
+        }
     }
 }
 

@@ -57,7 +57,7 @@
   - **Property 15: Zero life triggers permadeath**
   - **Validates: Requirements 8.1, 8.2**
 
-- [ ] 4. Implement EncounterSystem class
+- [x] 4. Implement EncounterSystem class
   - Create EncounterSystem class with encounter rate configuration (15%)
   - Implement checkEncounter method that detects grass tiles and generates random checks
   - Implement generateWildModel method that creates random AI models
@@ -66,7 +66,7 @@
   - Track last tile position to avoid duplicate checks
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-- [ ] 4.1 Write property test for encounter probability
+- [x] 4.1 Write property test for encounter probability
   - **Property 1: Grass encounter probability converges to 15%**
   - **Validates: Requirements 1.3**
 

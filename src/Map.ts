@@ -154,4 +154,19 @@ export class GameMap {
                 break;
         }
     }
+    
+    /**
+     * Get the tile type at a specific world position
+     */
+    getTileAt(x: number, y: number): Tile | null {
+        const tileX = Math.floor(x / this.tileSize);
+        const tileY = Math.floor(y / this.tileSize);
+        
+        if (tileY >= 0 && tileY < this.tiles.length && 
+            tileX >= 0 && tileX < this.tiles[0].length) {
+            return this.tiles[tileY][tileX];
+        }
+        
+        return null;
+    }
 }

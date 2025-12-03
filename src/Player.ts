@@ -83,32 +83,79 @@ export class Player {
     }
     
     checkCollision(x: number, y: number, collisionMap: boolean[][], tileSize: number): boolean {
-        const margin = 8; // Collision box smaller than sprite
-        const corners = [
+        // Collision box is slightly smaller than sprite for better feel
+        const margin = 4; // Reduced margin for tighter collision
+        
+        // Check multiple points around the player's bounding box
+        const checkPoints = [
+            // Four corners
             { x: x + margin, y: y + margin },
-            { x: x + this.size - margin, y: y + margin },
-            { x: x + margin, y: y + this.size - margin },
-            { x: x + this.size - margin, y: y + this.size - margin }
+            { x: x + this.size - margin - 1, y: y + margin },
+            { x: x + margin, y: y + this.size - margin - 1 },
+            { x: x + this.size - margin - 1, y: y + this.size - margin - 1 },
+            // Midpoints on each edge for better detection
+            { x: x + this.size / 2, y: y + margin },
+            { x: x + this.size / 2, y: y + this.size - margin - 1 },
+            { x: x + margin, y: y + this.size / 2 },
+            { x: x + this.size - margin - 1, y: y + this.size / 2 }
         ];
         
-        for (const corner of corners) {
-            const tileX = Math.floor(corner.x / tileSize);
-            const tileY = Math.floor(corner.y / tileSize);
+        for (const point of checkPoints) {
+            const tileX = Math.floor(point.x / tileSize);
+            const tileY = Math.floor(point.y / tileSize);
             
+            // Check bounds
             if (tileY >= 0 && tileY < collisionMap.length && 
                 tileX >= 0 && tileX < collisionMap[0].length) {
                 if (collisionMap[tileY][tileX]) {
                     return true;
                 }
+            } else {
+                // Out of bounds counts as collision
+                return true;
             }
         }
         
         return false;
     }
     
-    draw(ctx: CanvasRenderingContext2D, cameraX: number, cameraY: number): void {
+    /**
+     * Get the center position of the player (useful for tile lookups and encounters)
+     */
+    getCenterPosition(): Vector2 {
+        return {
+            x: this.position.x + this.size / 2,
+            y: this.position.y + this.size / 2
+        };
+    }
+    
+    /**
+     * Get the tile coordinates the player is currently on
+     */
+    getCurrentTile(): { tileX: number, tileY: number } {
+        const center = this.getCenterPosition();
+        return {
+            tileX: Math.floor(center.x / 32),
+            tileY: Math.floor(center.y / 32)
+        };
+    }
+    
+    draw(ctx: CanvasRenderingContext2D, cameraX: number, cameraY: number, debugCollision: boolean = false): void {
         const screenX = this.position.x - cameraX;
         const screenY = this.position.y - cameraY;
+        
+        // Draw collision box debug visualization
+        if (debugCollision) {
+            const margin = 4;
+            ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(
+                screenX + margin, 
+                screenY + margin, 
+                this.size - margin * 2, 
+                this.size - margin * 2
+            );
+        }
         
         // Draw simple character (will be replaced with sprite)
         ctx.fillStyle = '#790ECB';
