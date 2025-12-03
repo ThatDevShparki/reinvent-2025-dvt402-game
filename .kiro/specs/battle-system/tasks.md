@@ -1,13 +1,13 @@
 # Implementation Plan
 
-- [ ] 1. Set up battle system data structures and types
+- [x] 1. Set up battle system data structures and types
   - Create TypeScript interfaces for Ability, AIModelData, and battle-related types
   - Define MODEL_DEFINITIONS constant with 4 AI models (GPT-4 Turbo, Claude 3.5 Sonnet, Llama 3 70B, Gemini Pro)
   - Add battle state enums (BattlePhase, BattleOutcome)
   - Update existing types.ts with new interfaces
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 11.1_
 
-- [ ] 2. Implement AIModel class with stat calculations
+- [x] 2. Implement AIModel class with stat calculations
   - Create AIModel class with constructor that accepts model type and level
   - Implement stat calculation methods (calculateMaxLife, calculateMaxEnergy, calculateAbilityPower)
   - Implement combat methods (useAbility, takeDamage, consumeEnergy)
@@ -16,27 +16,27 @@
   - Add restoreToFull method for inventory addition
   - _Requirements: 2.1, 2.2, 2.3, 2.7, 2.8, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
 
-- [ ] 2.1 Write property test for AIModel stat scaling
+- [x] 2.1 Write property test for AIModel stat scaling
   - **Property 3: Model stat scaling follows formulas**
   - **Validates: Requirements 2.1, 2.2, 2.7, 2.8**
 
-- [ ] 2.2 Write property test for AIModel ability composition
+- [x] 2.2 Write property test for AIModel ability composition
   - **Property 4: Models have correct ability composition**
   - **Validates: Requirements 2.4, 2.5, 2.6**
 
-- [ ] 2.3 Write property test for AIModel level bounds
+- [x] 2.3 Write property test for AIModel level bounds
   - **Property 5: Level must be within valid range**
   - **Validates: Requirements 2.3**
 
-- [ ] 2.4 Write property test for ability power scaling
+- [x] 2.4 Write property test for ability power scaling
   - **Property 8: Ability power scales with level**
   - **Validates: Requirements 4.3**
 
-- [ ] 2.5 Write property test for level up stat increases
+- [x] 2.5 Write property test for level up stat increases
   - **Property 13: Level up increases stats and restores pools**
   - **Validates: Requirements 6.2, 6.3, 6.4, 6.5, 6.6**
 
-- [ ] 3. Implement Inventory class
+- [x] 3. Implement Inventory class
   - Create Inventory class with model storage array
   - Implement addModel method with full restoration
   - Implement removeModel method for permadeath
@@ -45,15 +45,15 @@
   - Implement save/load methods for persistence
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 8.1, 8.2_
 
-- [ ] 3.1 Write property test for inventory restoration
+- [x] 3.1 Write property test for inventory restoration
   - **Property 10: Inventory addition restores model to full**
   - **Validates: Requirements 5.2, 5.3**
 
-- [ ] 3.2 Write property test for active model persistence
+- [x] 3.2 Write property test for active model persistence
   - **Property 11: Active model selection persists**
   - **Validates: Requirements 5.6**
 
-- [ ] 3.3 Write property test for permadeath removal
+- [x] 3.3 Write property test for permadeath removal
   - **Property 15: Zero life triggers permadeath**
   - **Validates: Requirements 8.1, 8.2**
 
